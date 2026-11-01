@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
+import RoundList from '@/components/RoundList.vue'
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <RoundList />
   </main>
 </template>
