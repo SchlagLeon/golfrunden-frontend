@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 interface Round {
   roundId: number
@@ -8,11 +8,24 @@ interface Round {
   note: string
 }
 
-const rounds = ref<Round[]>([
-  { roundId: 1, date: '2026-10-11', courseName: 'Testplatz', note: 'Erste Testrunde' },
-  { roundId: 2, date: '2026-10-18', courseName: 'Golfclub Beispiel', note: 'Windig' },
-  { roundId: 3, date: '2026-10-25', courseName: 'Testplatz', note: 'Neue Bestleistung' },
-])
+const rounds = ref<Round[]>([])
+
+function loadRounds() {
+  const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL
+  const endpoint = baseUrl + '/api/rounds'
+  const requestOptions: RequestInit = {
+    method: 'GET',
+    redirect: 'follow',
+  }
+  fetch(endpoint, requestOptions)
+    .then((response) => response.json())
+    .then((result: Round[]) => {
+      rounds.value = result
+    })
+    .catch((error) => console.log('error', error))
+}
+
+onMounted(loadRounds)
 </script>
 
 <template>
